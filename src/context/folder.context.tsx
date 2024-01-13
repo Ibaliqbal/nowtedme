@@ -1,9 +1,8 @@
 import { ReactElement, createContext, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
+import { Folder } from "../type/folder.type";
 
-export type Folder = {
-  idFolder: number;
-  nameFolder: string;
-};
+
 
 type StateType = {
   folder: Folder[];
@@ -31,9 +30,9 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
       const filterFolder = state.folder.filter(
         (folder) => folder.idFolder !== removeFolderId[0].idFolder
       );
-      // if (state.folder.length === 1) {
-      //   localStorage.removeItem("folders");
-      // }
+      if (state.folder.length === 1) {
+        localStorage.removeItem("folders");
+      }
       return { folder: [...filterFolder] };
     case `${REDUCER_TYPE.RENDER_FOLDER}`:
       console.log(action.payload)
@@ -45,6 +44,7 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
 
 const useFolderContext = (initState: StateType) => {
   const [state, dispatch] = useReducer(reducer, initState);
+  const navigate = useNavigate()
 
   const handleCreateFolder = (nameFolder: string) => {
     const id: number = state.folder.length ? state.folder[0].idFolder + 1 : 1;
@@ -71,6 +71,7 @@ const useFolderContext = (initState: StateType) => {
   };
 
   const renderFolder = (folders: Folder[]): void => {
+    navigate("/")
     dispatch({
       type: `${REDUCER_TYPE.RENDER_FOLDER}`,
       payload: folders,

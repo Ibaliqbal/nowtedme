@@ -6,9 +6,10 @@ import {
   TiStarOutline,
   TiTrash,
 } from "react-icons/ti";
-import { FolderContext, Folder } from "../context/folder.context";
-import { NavLink, json } from "react-router-dom";
+import { FolderContext } from "../context/folder.context";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
+import { Folder } from "../type/folder.type";
 
 type HeaderProps = {
   handleHideModal: () => void;
@@ -18,6 +19,8 @@ type HeaderProps = {
 const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
   const { state, removeFolder, renderFolder } = useContext(FolderContext);
   const [folders, setFolders] = useState<Folder[]>([]);
+  const navigate = useNavigate()
+  const location = useLocation();
   useEffect(() => {
     setFolders(state.folder);
   }, [state.folder]);
@@ -29,11 +32,8 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
   useEffect(() => {
     const folder = localStorage.getItem("folders");
     if (folder) {
-      console.log({ folder });
       const parseFolder = JSON.parse(folder) as Folder[];
       if (parseFolder.length) {
-        console.log({ parseFolder });
-        console.log("ada di local storage");
         renderFolder(parseFolder);
         setFolders(parseFolder);
       }
@@ -48,11 +48,14 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
           </div>
           <button
             className="bg-[#242424] py-3 text-lg font-semibold"
-            onClick={handleHideModalNoted}
+            onClick={() => navigate("/create-note")}
           >
             + New Note
           </button>
         </header>
+        <button className="bg-[#242424] py-3 text-lg font-semibold">
+          LOGIN
+        </button>
         <section className="flex flex-col gap-6 justify-center">
           <div className="flex items-center justify-between">
             <h2>Folders</h2>
@@ -61,7 +64,7 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
             </button>
           </div>
           <div>
-            <ul className="w-full grid items-center gap-1 max-h-[400px] overflow-auto parent folder-list">
+            <ul className="w-full grid items-center gap-3 max-h-[400px] overflow-auto parent folder-list">
               {folders?.length > 0 ? (
                 folders?.map((folder: Folder) => {
                   return (
@@ -72,21 +75,28 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 1, ease: "anticipate" }}
                     >
-                      <NavLink
-                        to={"/"}
-                        className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full justify-between"
-                      >
-                        <div className="flex items-center gap-4">
-                          <TiFolder />
+                      <div className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full justify-between">
+                        <NavLink
+                          to={`/${folder.nameFolder}`}
+                          className="flex items-center gap-4"
+                        >
+                          {location.pathname === `/${folder.nameFolder}` ? (
+                            <TiFolderOpen />
+                          ) : (
+                            <TiFolder />
+                          )}
                           {folder.nameFolder}
-                        </div>
-                        <button
+                        </NavLink>
+                        <Link
                           className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out"
-                          onClick={() => removeFolder(folder.idFolder)}
+                          to={"/"}
+                          onClick={() => {
+                            removeFolder(folder.idFolder);
+                          }}
                         >
                           <TiTrash />
-                        </button>
-                      </NavLink>
+                        </Link>
+                      </div>
                     </motion.li>
                   );
                 })
@@ -114,9 +124,6 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
             </ul>
           </div>
         </section>
-        <button className="bg-[#242424] py-3 text-lg font-semibold">
-          LOGIN
-        </button>
       </div>
     </section>
   );

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import Modal from "../../components/Modal";
 import { NotedContext } from "../../context/note.context";
 
@@ -8,11 +8,20 @@ type ModalNoteProps = {
 };
 
 const ModalNoted = ({ handleHideModal, isOpen }: ModalNoteProps) => {
-  const { state, handleCreateNoted } = useContext(NotedContext);
+  const { handleCreateNoted } = useContext(NotedContext);
   const [folderName, setFolderName] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [fill, setFill] = useState<string>("");
-  console.log(state.note);
+  const [year, setYear] = useState<number>(0);
+  const [month, setMonth] = useState<number>(0);
+  const [date, setDate] = useState<number>(0);
+
+  useEffect(() => {
+    const getFullDate = new Date();
+    setYear(getFullDate.getFullYear());
+    setMonth(getFullDate.getMonth());
+    setDate(getFullDate.getDate());
+  }, []);
   return (
     <Modal isOpen={isOpen}>
       <button onClick={handleHideModal}>Close Modal</button>
@@ -49,7 +58,8 @@ const ModalNoted = ({ handleHideModal, isOpen }: ModalNoteProps) => {
       </div>
       <button
         onClick={() => {
-          handleCreateNoted(folderName, title, fill);
+          handleCreateNoted(folderName, title, fill, year, month, date);
+          handleHideModal();
         }}
       >
         Submit

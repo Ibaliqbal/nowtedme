@@ -35,6 +35,6 @@
   background: #555;
 }
 
-.folder-list li a.active {
+.folder-list li div:has(> a.active) {
   @apply bg-[#323232];
 }

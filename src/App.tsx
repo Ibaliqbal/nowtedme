@@ -8,6 +8,9 @@ import ModalNote from "./components/ModalFolder";
 import { FolderProvider } from "./context/folder.context";
 import { NotedProvider } from "./context/note.context";
 import ModalNoted from "./features/Noted/ModalNoted";
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Notes";
+import Note from "./pages/Notes";
 
 function App() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -18,43 +21,58 @@ function App() {
   const handleHideModalNoted = (): void => {
     setIsOpenModalNoted((prev) => !prev);
   };
-  const router = createBrowserRouter([
-    {
-      path: "/",
-      element: (
-        <main className="max-w-[90rem] mx-auto relative bg-blue-500 flex flex-row h-screen max-h-screen">
-          {isOpen ? (
-            <ModalNote
-              handleHideModal={handleHideModalFolder}
-              isOpen={isOpen}
-            />
-          ) : null}
-          {isOpenModalNoted ? (
-            <ModalNoted
-              handleHideModal={handleHideModalNoted}
-              isOpen={isOpenModalNoted}
-            />
-          ) : null}
-          <Header
-            handleHideModal={handleHideModalFolder}
-            handleHideModalNoted={handleHideModalNoted}
-          />
-          <ListNoted />
-          <Noted />
-        </main>
-      ),
-    },
-    // {
-    //   path: "/testreactquill",
-    //   element: <TestReactQuill />,
-    // },
-  ]);
 
   return (
     <>
       <FolderProvider>
         <NotedProvider>
-          <RouterProvider router={router} />
+          <Routes>
+            <Route
+              path="/"
+              element={
+                <Note
+                  isOpen={isOpen}
+                  isOpenModalNoted={isOpenModalNoted}
+                  handleHideModalFolder={handleHideModalFolder}
+                  handleHideModalNoted={handleHideModalNoted}
+                />
+              }
+            />
+            <Route
+              path=":folder"
+              element={
+                <Note
+                  isOpen={isOpen}
+                  isOpenModalNoted={isOpenModalNoted}
+                  handleHideModalFolder={handleHideModalFolder}
+                  handleHideModalNoted={handleHideModalNoted}
+                />
+              }
+            >
+              <Route
+                path=":note"
+                element={
+                  <Note
+                    isOpen={isOpen}
+                    isOpenModalNoted={isOpenModalNoted}
+                    handleHideModalFolder={handleHideModalFolder}
+                    handleHideModalNoted={handleHideModalNoted}
+                  />
+                }
+              />
+            </Route>
+            <Route
+              path="/create-note"
+              element={
+                <Note
+                  isOpen={isOpen}
+                  isOpenModalNoted={isOpenModalNoted}
+                  handleHideModalFolder={handleHideModalFolder}
+                  handleHideModalNoted={handleHideModalNoted}
+                />
+              }
+            />
+          </Routes>
         </NotedProvider>
       </FolderProvider>
     </>
