@@ -16,7 +16,7 @@ const ModalOverlay = ({ children, isOpen }: ModalProps) => {
   return (
     <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-30 overflow-hidden">
       <div
-        className={`bg-white p-4 rounded-lg shadow-lg text-gray-900 mx-2 scale-up-bottom`}
+        className={`bg-white p-4 rounded-lg shadow-lg text-gray-900 mx-2`}
       >
         {children}
       </div>

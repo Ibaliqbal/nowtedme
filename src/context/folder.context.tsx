@@ -2,8 +2,6 @@ import { ReactElement, createContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { Folder } from "../type/folder.type";
 
-
-
 type StateType = {
   folder: Folder[];
 };
@@ -35,7 +33,6 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
       }
       return { folder: [...filterFolder] };
     case `${REDUCER_TYPE.RENDER_FOLDER}`:
-      console.log(action.payload)
       return { folder: [...action.payload] };
     default:
       throw new Error();
@@ -44,14 +41,15 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
 
 const useFolderContext = (initState: StateType) => {
   const [state, dispatch] = useReducer(reducer, initState);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   const handleCreateFolder = (nameFolder: string) => {
     const id: number = state.folder.length ? state.folder[0].idFolder + 1 : 1;
+    const folderName = nameFolder.replace(/ /g, '-');
     const folder: Folder[] = [
       {
         idFolder: id,
-        nameFolder: nameFolder,
+        nameFolder: folderName,
       },
     ];
     dispatch({
@@ -71,7 +69,7 @@ const useFolderContext = (initState: StateType) => {
   };
 
   const renderFolder = (folders: Folder[]): void => {
-    navigate("/")
+    navigate("/");
     dispatch({
       type: `${REDUCER_TYPE.RENDER_FOLDER}`,
       payload: folders,

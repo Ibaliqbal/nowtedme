@@ -11,7 +11,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { FolderContext } from "../context/folder.context";
 import { NotedContext } from "../context/note.context";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 type SelectedNotedProps = {
   idNoted?: string;
@@ -21,7 +21,7 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
   const [value, setValue] = useState<string>("");
   const [titleNote, setTitleNote] = useState<string>("");
   const { state: folders } = useContext(FolderContext);
-  const { state, handleCreateNoted } = useContext(NotedContext);
+  const { state, handleCreateNoted, removeNote } = useContext(NotedContext);
   const [isOpenMore, setIsOpenMore] = useState<boolean>(false);
   const [year, setYear] = useState<number>(0);
   const [month, setMonth] = useState<number>(0);
@@ -29,6 +29,7 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
   const [selectFolder, setSelectFolder] = useState<string>("");
   const location = useLocation();
   const getFullDate = new Date();
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (location.pathname === "/create-note") {
@@ -41,6 +42,7 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
       const idNote: number = parseInt(idNoted ?? "");
       const findNoted = state.note.find((note) => note.id === idNote);
       if (findNoted) {
+        setSelectFolder(findNoted.folderName);
         setValue(findNoted.fillNote);
         setTitleNote(findNoted.title);
         setYear(findNoted.year);
@@ -63,10 +65,29 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
   const handleSave = (): void => {
     const selFolder = selectFolder === "Select Folder" ? "" : selectFolder;
     handleCreateNoted(selFolder, titleNote, value, year, month, date);
-    console.log(state.note);
+    if (selectFolder !== "Select Folder") {
+      navigate(`/${selectFolder}`);
+    } else {
+      navigate("/");
+    }
     setValue("");
     setTitleNote("");
     setSelectFolder("Select Folder");
+  };
+
+  const handleDelete = () => {
+    if (idNoted) {
+      const idNote = parseInt(idNoted);
+      const findNoted = state.note.find((note) => note.id === idNote);
+      if (findNoted) {
+        removeNote(findNoted?.id);
+        if (selectFolder !== "Select Folder") {
+          navigate(`/${encodeURIComponent(selectFolder)}`);
+        } else {
+          navigate("/");
+        }
+      }
+    }
   };
 
   return (
@@ -103,9 +124,14 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
               <h3 className="flex items-center gap-3 cursor-pointer">
                 <BsStar className="text-xl" /> Favorite
               </h3>
-              <h3 className="flex items-center gap-3 cursor-pointer">
-                <BsTrash className="text-xl" /> Delete
-              </h3>
+              {idNoted ? (
+                <h3
+                  className="flex items-center gap-3 cursor-pointer"
+                  onClick={handleDelete}
+                >
+                  <BsTrash className="text-xl" /> Delete
+                </h3>
+              ) : null}
             </div>
           </div>
         </div>
@@ -129,13 +155,14 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                 setSelectFolder(e.target.value)
               }
+              value={selectFolder}
             >
               <option value="Select Folder">Select Folder</option>
               {folders.folder.length ? (
                 folders.folder.map((folder) => {
                   return (
                     <option value={folder.nameFolder} key={folder.idFolder}>
-                      {folder.nameFolder}
+                      {folder.nameFolder.replace(/-/g, " ")}
                     </option>
                   );
                 })

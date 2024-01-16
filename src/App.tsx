@@ -1,16 +1,12 @@
-import Header from "./components/Header";
-import ListNoted from "./components/ListNoted";
-import Noted from "./components/Noted";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import TestReactQuill from "./components/TestReactQuill";
 import { useState } from "react";
-import ModalNote from "./components/ModalFolder";
 import { FolderProvider } from "./context/folder.context";
 import { NotedProvider } from "./context/note.context";
-import ModalNoted from "./features/Noted/ModalNoted";
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Notes";
 import Note from "./pages/Notes";
+import Login from "./pages/Login";
+import { AuthProvider } from "./context/auth.context";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -24,33 +20,24 @@ function App() {
 
   return (
     <>
-      <FolderProvider>
-        <NotedProvider>
-          <Routes>
-            <Route
-              path="/"
-              element={
-                <Note
-                  isOpen={isOpen}
-                  isOpenModalNoted={isOpenModalNoted}
-                  handleHideModalFolder={handleHideModalFolder}
-                  handleHideModalNoted={handleHideModalNoted}
-                />
-              }
+      <AuthProvider>
+        <FolderProvider>
+          <NotedProvider>
+            <ToastContainer
+              position="bottom-center"
+              autoClose={2000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss={false}
+              draggable
+              pauseOnHover
+              theme="dark"
             />
-            <Route
-              path=":folder"
-              element={
-                <Note
-                  isOpen={isOpen}
-                  isOpenModalNoted={isOpenModalNoted}
-                  handleHideModalFolder={handleHideModalFolder}
-                  handleHideModalNoted={handleHideModalNoted}
-                />
-              }
-            >
+            <Routes>
               <Route
-                path=":note"
+                path="/"
                 element={
                   <Note
                     isOpen={isOpen}
@@ -60,21 +47,45 @@ function App() {
                   />
                 }
               />
-            </Route>
-            <Route
-              path="/create-note"
-              element={
-                <Note
-                  isOpen={isOpen}
-                  isOpenModalNoted={isOpenModalNoted}
-                  handleHideModalFolder={handleHideModalFolder}
-                  handleHideModalNoted={handleHideModalNoted}
+              <Route path="/Login" element={<Login />} />
+              <Route
+                path=":folder"
+                element={
+                  <Note
+                    isOpen={isOpen}
+                    isOpenModalNoted={isOpenModalNoted}
+                    handleHideModalFolder={handleHideModalFolder}
+                    handleHideModalNoted={handleHideModalNoted}
+                  />
+                }
+              >
+                <Route
+                  path=":note"
+                  element={
+                    <Note
+                      isOpen={isOpen}
+                      isOpenModalNoted={isOpenModalNoted}
+                      handleHideModalFolder={handleHideModalFolder}
+                      handleHideModalNoted={handleHideModalNoted}
+                    />
+                  }
                 />
-              }
-            />
-          </Routes>
-        </NotedProvider>
-      </FolderProvider>
+              </Route>
+              <Route
+                path="/create-note"
+                element={
+                  <Note
+                    isOpen={isOpen}
+                    isOpenModalNoted={isOpenModalNoted}
+                    handleHideModalFolder={handleHideModalFolder}
+                    handleHideModalNoted={handleHideModalNoted}
+                  />
+                }
+              />
+            </Routes>
+          </NotedProvider>
+        </FolderProvider>
+      </AuthProvider>
     </>
   );
 }

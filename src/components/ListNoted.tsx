@@ -10,20 +10,35 @@ const ListNoted = () => {
   const params = useParams();
   const location = useLocation();
   useEffect(() => {
-    const filterByFolder = state.note.filter(
-      (note) => note.folderName === params.folder
-    );
-    setNotes(state.note);
+    if (params.folder) {
+      const filterByFolder = state.note.filter(
+        (note) => note.folderName === params.folder
+      );
+      setNotes(filterByFolder);
+    } else {
+      const filterByFolder = state.note.filter(
+        (note) => note.folderName === "NoFolder"
+      );
+      setNotes(filterByFolder);
+    }
   }, [state.note]);
   useEffect(() => {
-    const filterByFolder = state.note.filter(
-      (note) => note.folderName === params.folder
-    );
-    setNotes(filterByFolder);
+    if (params.folder) {
+      const filterByFolder = state.note.filter(
+        (note) => note.folderName === params.folder
+      );
+      console.log(params.folder);
+      setNotes(filterByFolder);
+    } else {
+      const filterByFolder = state.note.filter(
+        (note) => note.folderName === "NoFolder"
+      );
+      setNotes(filterByFolder);
+    }
   }, [params.folder]);
   useEffect(() => {
     if (notes?.length) {
-      localStorage.setItem("notes", JSON.stringify(notes));
+      localStorage.setItem("notes", JSON.stringify(state.note));
     }
   }, [notes]);
   useEffect(() => {
@@ -31,8 +46,11 @@ const ListNoted = () => {
     if (note) {
       const parseNote = JSON.parse(note) as Note[];
       if (parseNote.length) {
+        const filterByFolder = state.note.filter(
+          (note) => note.folderName === "NoFolder"
+        );
+        setNotes(filterByFolder);
         renderNotes(parseNote);
-        setNotes(parseNote);
       }
     }
   }, []);
@@ -43,7 +61,9 @@ const ListNoted = () => {
         {location.pathname === `/${params.folder}` ||
         location.pathname === `/${params.folder}/${params.note}` ? (
           <>
-            <h1 className="font-semibold text-2xl">{params.folder}</h1>
+            <h1 className="font-semibold text-2xl">
+              {params.folder?.replace(/-/g, " ")}
+            </h1>
             <ul className="grid gap-6 items-center pb-3">
               {notes.length > 0
                 ? notes.map((note) => {
