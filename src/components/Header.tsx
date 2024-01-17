@@ -18,10 +18,9 @@ import { toast } from "react-toastify";
 
 type HeaderProps = {
   handleHideModal: () => void;
-  handleHideModalNoted: () => void;
 };
 
-const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
+const Header = ({ handleHideModal }: HeaderProps) => {
   const user = useContext(AuthContext);
   const { state, removeFolder, renderFolder } = useContext(FolderContext);
   const { state: noted, removeNote } = useContext(NotedContext);
@@ -58,15 +57,19 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
           </div>
           <button
             className="bg-[#242424] py-3 text-lg font-semibold"
-            onClick={() => navigate("/create-note")}
+            onClick={() =>
+              user?.userIqbal ? navigate("/create-note") : navigate("/Login")
+            }
           >
             + New Note
           </button>
         </header>
         {user?.userIqbal ? (
           <>
-            <div className="flex items-center justify-center">
-              <h1>Hai {user.userIqbal.displayName}</h1>
+            <div className="">
+              <h1 className="text-xl font-bold text-center">
+                Hai {user.userIqbal.displayName}
+              </h1>
             </div>
             <button
               className="bg-red-600 py-3 text-lg font-semibold"
@@ -90,34 +93,41 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
             <h2>Recently</h2>
           </div>
           <div>
-            <ul className="w-full grid items-center gap-3 max-h-[175px] overflow-auto parent folder-list">
+            <ul className="w-full grid items-center gap-3 max-h-[120px] overflow-auto parent folder-list">
               {noted.note.length > 0 ? (
-                noted.note.map((note: Note) => {
-                  return (
-                    <motion.li
-                      className="group"
-                      key={note.id}
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 1, ease: "anticipate" }}
-                    >
-                      <div className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full justify-between">
-                        <NavLink
-                          to={`/${note.folderName}/${note.id} `}
-                          className="flex items-center gap-4"
-                        >
-                          {location.pathname ===
-                          `/${note.folderName}/${note.id}` ? (
-                            <TiFolderOpen />
-                          ) : (
-                            <TiFolder />
-                          )}
-                          {note.title}
-                        </NavLink>
-                      </div>
-                    </motion.li>
-                  );
-                })
+                user?.userIqbal ? (
+                  noted.note.map((note: Note) => {
+                    return (
+                      <motion.li
+                        className="group"
+                        key={note.id}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, ease: "anticipate" }}
+                      >
+                        <div className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full justify-between">
+                          <NavLink
+                            to={`/${note.folderName}/${note.id} `}
+                            className="flex items-center gap-4"
+                          >
+                            {location.pathname ===
+                            `/${note.folderName}/${note.id}` ? (
+                              <TiFolderOpen />
+                            ) : (
+                              <TiFolder />
+                            )}
+                            {note.title}
+                          </NavLink>
+                        </div>
+                      </motion.li>
+                    );
+                  })
+                ) : (
+                  <div className="w-full grid place-items-center py-4 ">
+                    <TiFolder className="text-4xl" />
+                    <h4 className="text-lg font-semibold">Create New Notes</h4>
+                  </div>
+                )
               ) : (
                 <div className="w-full grid place-items-center py-4 ">
                   <TiFolder className="text-4xl" />
@@ -130,51 +140,63 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
         <section className="flex flex-col gap-6 justify-center">
           <div className="flex items-center justify-between">
             <h2>Folders</h2>
-            <button className="text-2xl" onClick={handleHideModal}>
+            <button
+              className="text-2xl"
+              onClick={() => {
+                user?.userIqbal ? handleHideModal() : navigate("/Login");
+              }}
+            >
               <TiFolderAdd aria-label="add folder" />
             </button>
           </div>
           <div>
-            <ul className="w-full grid items-center gap-3 max-h-[175px] overflow-auto parent folder-list">
+            <ul className="w-full grid items-center gap-3 max-h-[120px] overflow-auto parent folder-list">
               {folders?.length > 0 ? (
-                folders?.map((folder: Folder) => {
-                  return (
-                    <motion.li
-                      className="group"
-                      key={folder.idFolder}
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 1, ease: "anticipate" }}
-                    >
-                      <div className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full justify-between">
-                        <NavLink
-                          to={`/${folder.nameFolder}`}
-                          className="flex items-center gap-4"
-                        >
-                          {location.pathname === `/${folder.nameFolder}` ? (
-                            <TiFolderOpen />
-                          ) : (
-                            <TiFolder />
-                          )}
-                          {folder.nameFolder.replace(/-/g, " ")}
-                        </NavLink>
-                        <Link
-                          className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out"
-                          to={"/"}
-                          onClick={() => {
-                            const noteList = noted.note.find(
-                              (note) => note.folderName === folder.nameFolder
-                            );
-                            if (noteList) removeNote(noteList?.id);
-                            removeFolder(folder.idFolder);
-                          }}
-                        >
-                          <TiTrash />
-                        </Link>
-                      </div>
-                    </motion.li>
-                  );
-                })
+                user?.userIqbal ? (
+                  folders?.map((folder: Folder) => {
+                    return (
+                      <motion.li
+                        className="group"
+                        key={folder.idFolder}
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 1, ease: "anticipate" }}
+                      >
+                        <div className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full justify-between">
+                          <NavLink
+                            to={`/${folder.nameFolder}`}
+                            className="flex items-center gap-4"
+                          >
+                            {location.pathname === `/${folder.nameFolder}` ? (
+                              <TiFolderOpen />
+                            ) : (
+                              <TiFolder />
+                            )}
+                            {folder.nameFolder.replace(/-/g, " ")}
+                          </NavLink>
+                          <Link
+                            className="group-hover:opacity-100 opacity-0 transition-opacity duration-300 ease-in-out"
+                            to={"/"}
+                            onClick={() => {
+                              const noteList = noted.note.find(
+                                (note) => note.folderName === folder.nameFolder
+                              );
+                              if (noteList) removeNote(noteList?.id);
+                              removeFolder(folder.idFolder);
+                            }}
+                          >
+                            <TiTrash />
+                          </Link>
+                        </div>
+                      </motion.li>
+                    );
+                  })
+                ) : (
+                  <div className="w-full grid place-items-center py-4 ">
+                    <TiFolder className="text-4xl" />
+                    <h4 className="text-lg font-semibold">Create New Folder</h4>
+                  </div>
+                )
               ) : (
                 <div className="w-full grid place-items-center py-4 ">
                   <TiFolder className="text-4xl" />
@@ -188,13 +210,12 @@ const Header = ({ handleHideModal, handleHideModalNoted }: HeaderProps) => {
           <h2>More</h2>
           <div>
             <ul className="w-full grid items-center gap-1">
-              <li className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full">
+              <li
+                className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full"
+                onClick={() => navigate("/Favorite")}
+              >
                 <TiStarOutline className="text-2xl" />
                 Favorite
-              </li>
-              <li className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full">
-                <TiTrash className="text-2xl" />
-                Trash
               </li>
             </ul>
           </div>

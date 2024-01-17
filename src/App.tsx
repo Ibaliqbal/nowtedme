@@ -2,8 +2,8 @@ import { useState } from "react";
 import { FolderProvider } from "./context/folder.context";
 import { NotedProvider } from "./context/note.context";
 import { Routes, Route } from "react-router-dom";
-import Note from "./pages/Notes";
 import Login from "./pages/Login";
+import Notes from "./pages/Notes";
 import { AuthProvider } from "./context/auth.context";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -39,11 +39,9 @@ function App() {
               <Route
                 path="/"
                 element={
-                  <Note
+                  <Notes
                     isOpen={isOpen}
-                    isOpenModalNoted={isOpenModalNoted}
                     handleHideModalFolder={handleHideModalFolder}
-                    handleHideModalNoted={handleHideModalNoted}
                   />
                 }
               />
@@ -51,22 +49,19 @@ function App() {
               <Route
                 path=":folder"
                 element={
-                  <Note
+                  <Notes
                     isOpen={isOpen}
-                    isOpenModalNoted={isOpenModalNoted}
                     handleHideModalFolder={handleHideModalFolder}
-                    handleHideModalNoted={handleHideModalNoted}
                   />
                 }
               >
                 <Route
                   path=":note"
                   element={
-                    <Note
+                    <Notes
                       isOpen={isOpen}
-                      isOpenModalNoted={isOpenModalNoted}
                       handleHideModalFolder={handleHideModalFolder}
-                      handleHideModalNoted={handleHideModalNoted}
+
                     />
                   }
                 />
@@ -74,11 +69,9 @@ function App() {
               <Route
                 path="/create-note"
                 element={
-                  <Note
+                  <Notes
                     isOpen={isOpen}
-                    isOpenModalNoted={isOpenModalNoted}
                     handleHideModalFolder={handleHideModalFolder}
-                    handleHideModalNoted={handleHideModalNoted}
                   />
                 }
               />

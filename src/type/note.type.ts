@@ -6,4 +6,5 @@ export type Note = {
   year: number;
   month: number;
   date: number;
+  bookmark: boolean
 };

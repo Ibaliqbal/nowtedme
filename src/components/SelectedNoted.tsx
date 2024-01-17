@@ -5,6 +5,7 @@ import {
   BsFolder,
   BsTrash,
   BsStar,
+  BsStarFill,
   BsCheckLg,
 } from "react-icons/bs";
 import ReactQuill from "react-quill";
@@ -18,15 +19,17 @@ type SelectedNotedProps = {
 };
 
 const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
+  const { state: folders } = useContext(FolderContext);
+  const { state, handleCreateNoted, removeNote, bookmarkNote } =
+    useContext(NotedContext);
   const [value, setValue] = useState<string>("");
   const [titleNote, setTitleNote] = useState<string>("");
-  const { state: folders } = useContext(FolderContext);
-  const { state, handleCreateNoted, removeNote } = useContext(NotedContext);
-  const [isOpenMore, setIsOpenMore] = useState<boolean>(false);
+  const [selectFolder, setSelectFolder] = useState<string>("");
   const [year, setYear] = useState<number>(0);
   const [month, setMonth] = useState<number>(0);
   const [date, setDate] = useState<number>(0);
-  const [selectFolder, setSelectFolder] = useState<string>("");
+  const [isOpenMore, setIsOpenMore] = useState<boolean>(false);
+  const [bookmark, setBookmark] = useState<boolean>(false);
   const location = useLocation();
   const getFullDate = new Date();
   const navigate = useNavigate();
@@ -48,9 +51,24 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
         setYear(findNoted.year);
         setMonth(findNoted.month);
         setDate(findNoted.date);
+        setBookmark(findNoted.bookmark);
       }
     }
   }, [idNoted]);
+
+  useEffect(() => {
+    const idNote: number = parseInt(idNoted ?? "");
+    const findNoted = state.note.find((note) => note.id === idNote);
+    if (findNoted) {
+      setSelectFolder(findNoted.folderName);
+      setValue(findNoted.fillNote);
+      setTitleNote(findNoted.title);
+      setYear(findNoted.year);
+      setMonth(findNoted.month);
+      setDate(findNoted.date);
+      setBookmark(findNoted.bookmark);
+    }
+  }, [state.note])
 
   useEffect(() => {
     setYear(getFullDate.getFullYear());
@@ -90,6 +108,13 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
     }
   };
 
+  const hanldeBookMark = () => {
+    if (idNoted) {
+      const idNote = parseInt(idNoted);
+      bookmarkNote(idNote);
+    }
+  };
+
   return (
     <section className="px-4 py-3 text-white flex flex-col gap-4 h-full parent">
       <div className="child-1 flex flex-col gap-4 mb-3">
@@ -121,9 +146,19 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
               >
                 <BsCheckLg className="text-xl" /> Save
               </h3>
-              <h3 className="flex items-center gap-3 cursor-pointer">
-                <BsStar className="text-xl" /> Favorite
-              </h3>
+              {idNoted ? (
+                <h3
+                  className="flex items-center gap-3 cursor-pointer"
+                  onClick={hanldeBookMark}
+                >
+                  {bookmark ? (
+                    <BsStarFill className="text-xl" />
+                  ) : (
+                    <BsStar className="text-xl" />
+                  )}
+                  Favorite
+                </h3>
+              ) : null}
               {idNoted ? (
                 <h3
                   className="flex items-center gap-3 cursor-pointer"

@@ -7,31 +7,20 @@ import ModalNote from "../features/Folder/ModalFolder";
 
 type HomeProps = {
   isOpen: boolean;
-  isOpenModalNoted: boolean;
   handleHideModalFolder: () => void;
-  handleHideModalNoted: () => void;
 };
 
-const Note = ({
+const Notes = ({
   isOpen,
-  isOpenModalNoted,
   handleHideModalFolder,
-  handleHideModalNoted,
 }: HomeProps) => {
   return (
     <main className="max-w-[90rem] mx-auto relative bg-blue-500 flex flex-row h-screen max-h-screen">
       {isOpen ? (
         <ModalNote handleHideModal={handleHideModalFolder} isOpen={isOpen} />
       ) : null}
-      {isOpenModalNoted ? (
-        <ModalNoted
-          handleHideModal={handleHideModalNoted}
-          isOpen={isOpenModalNoted}
-        />
-      ) : null}
       <Header
         handleHideModal={handleHideModalFolder}
-        handleHideModalNoted={handleHideModalNoted}
       />
       <ListNoted />
       <Noted />
@@ -39,4 +28,4 @@ const Note = ({
   );
 };
 
-export default Note;
+export default Notes;
