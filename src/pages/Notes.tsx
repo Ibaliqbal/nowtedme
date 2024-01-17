@@ -1,8 +1,6 @@
-import React from "react";
 import Noted from "../components/Noted";
 import ListNoted from "../components/ListNoted";
 import Header from "../components/Header";
-import ModalNoted from "../features/Noted/ModalNoted";
 import ModalNote from "../features/Folder/ModalFolder";
 
 type HomeProps = {

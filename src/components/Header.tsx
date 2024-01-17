@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   TiFolderAdd,
   TiFolder,
@@ -14,7 +14,6 @@ import { Folder } from "../type/folder.type";
 import { Note } from "../type/note.type";
 import { NotedContext } from "../context/note.context";
 import { AuthContext } from "../context/auth.context";
-import { toast } from "react-toastify";
 
 type HeaderProps = {
   handleHideModal: () => void;

@@ -10,12 +10,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
-  const [isOpenModalNoted, setIsOpenModalNoted] = useState<boolean>(false);
   const handleHideModalFolder = (): void => {
     setIsOpen((prev) => !prev);
-  };
-  const handleHideModalNoted = (): void => {
-    setIsOpenModalNoted((prev) => !prev);
   };
 
   return (
