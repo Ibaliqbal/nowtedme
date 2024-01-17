@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 
 type ModalProps = {
   children: ReactNode;
-  isOpen: boolean;
 };
 
 const BackdropOverlay = () => {
@@ -12,7 +11,7 @@ const BackdropOverlay = () => {
   );
 };
 
-const ModalOverlay = ({ children, isOpen }: ModalProps) => {
+const ModalOverlay = ({ children }: ModalProps) => {
   return (
     <div className="fixed top-0 left-0 w-full h-screen flex items-center justify-center z-30 overflow-hidden">
       <div
@@ -26,12 +25,12 @@ const ModalOverlay = ({ children, isOpen }: ModalProps) => {
 
 const portalElement = document.getElementById("modal") as HTMLDivElement;
 
-const Modal = ({ children, isOpen }: ModalProps) => {
+const Modal = ({ children }: ModalProps) => {
   return (
     <>
       {ReactDOM.createPortal(<BackdropOverlay />, portalElement)}
       {ReactDOM.createPortal(
-        <ModalOverlay isOpen={isOpen}>{children}</ModalOverlay>,
+        <ModalOverlay>{children}</ModalOverlay>,
         portalElement
       )}
     </>

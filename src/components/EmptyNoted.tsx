@@ -1,4 +1,3 @@
-import React from "react";
 import { FaRegFileAlt } from "react-icons/fa";
 
 const EmptyNoted = () => {

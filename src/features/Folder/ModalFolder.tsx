@@ -4,10 +4,9 @@ import { FolderContext } from "../../context/folder.context";
 
 type ModalNoteProps = {
   handleHideModal: () => void;
-  isOpen: boolean;
 };
 
-const ModalNote = ({ handleHideModal, isOpen }: ModalNoteProps) => {
+const ModalNote = ({ handleHideModal }: ModalNoteProps) => {
   const { handleCreateFolder } = useContext(FolderContext);
   const [nameFolder, setNameFolder] = useState<string>("");
   const inputRef = React.useRef<HTMLInputElement | null>(null);
@@ -15,7 +14,7 @@ const ModalNote = ({ handleHideModal, isOpen }: ModalNoteProps) => {
     inputRef.current?.focus();
   }, []);
   return (
-    <Modal isOpen={isOpen}>
+    <Modal>
       <div className="p-4 flex flex-col gap-6 relative">
         <button
           onClick={handleHideModal}
