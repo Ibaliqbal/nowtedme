@@ -7,7 +7,7 @@ const Noted = () => {
   const location = useLocation();
 
   return (
-    <section className="md:basis-1/2 bg-[#181818]">
+    <section className="md:basis-1/2 bg-secondary">
       {location.pathname ===
       `/${decodeURIComponent(params.folder ?? "")}/${params.note}` ? (
         <SelectedNoted idNoted={params.note} />

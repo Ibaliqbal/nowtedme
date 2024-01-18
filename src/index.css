@@ -37,4 +37,6 @@
 
 .folder-list li div:has(> a.active) {
   @apply bg-[#323232];
+
+  box-shadow: inset 25px 25px 50px #191919, inset -25px -25px 50px #4b4b4b;
 }

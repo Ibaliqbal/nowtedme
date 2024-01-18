@@ -71,7 +71,7 @@ const ListNoted = () => {
   }, []);
 
   return (
-    <section className="md:basis-1/4 bg-[#1C1C1C] max-h-screen overflow-auto parent">
+    <section className="md:basis-1/4 bg-[#1C1C1C] max-h-screen w-full overflow-auto parent">
       <div className="py-3 px-4 grid items-center text-white gap-3">
         {location.pathname === `/${params.folder}` ||
         location.pathname === `/${params.folder}/${params.note}` ? (
@@ -86,7 +86,7 @@ const ListNoted = () => {
                       return (
                         <Link to={`/${params.folder}/${note.id}`} key={note.id}>
                           <motion.li
-                            className="bg-[#313131] p-3 rounded-md cursor-pointer"
+                            className="bg-note p-3 rounded-md cursor-pointer"
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1, ease: "backInOut" }}
@@ -118,7 +118,7 @@ const ListNoted = () => {
                           key={note.id}
                         >
                           <motion.li
-                            className="bg-[#313131] p-3 rounded-md"
+                            className="bg-note p-3 rounded-md"
                             initial={{ opacity: 0, y: 50 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             transition={{ duration: 1, ease: "backInOut" }}

@@ -1,6 +1,6 @@
 import { ReactElement, createContext, useReducer } from "react";
 import { Note } from "../type/note.type";
-import {toast} from "react-toastify"
+import { toast } from "react-toastify";
 
 type StateType = {
   note: Note[];
@@ -11,6 +11,7 @@ const enum REDUCER_TYPE {
   REMOVE_NOTED,
   RENDER_NOTED,
   BOOKMARK_NOTED,
+  SAVEAS_NOTED,
 }
 
 type ReducerAction = {
@@ -50,7 +51,7 @@ const useNotedContext = (initState: StateType) => {
     date: number
   ): void => {
     const id: number = state.note.length > 0 ? state.note[0].id + 1 : 1;
-    const nameFolder = folderName ? folderName : "NoFolder";
+    const nameFolder = folderName ? folderName : "No-Folder";
     const newNoted: Note[] = [
       {
         folderName: nameFolder,
@@ -63,7 +64,7 @@ const useNotedContext = (initState: StateType) => {
         bookmark: false,
       },
     ];
-    toast.success("Successfuly create note")
+    toast.success("Successfuly create note");
     dispatch({
       type: `${REDUCER_TYPE.ADD_NEW_NOTED}`,
       payload: newNoted,
@@ -79,7 +80,7 @@ const useNotedContext = (initState: StateType) => {
 
   const removeNote = (id: number): void => {
     const notesFilter = state.note.filter((list) => list.id !== id);
-    toast.error("Succesfuly delete note")
+    toast.error("Succesfuly delete note");
     dispatch({
       type: `${REDUCER_TYPE.REMOVE_NOTED}`,
       payload: notesFilter,
@@ -99,7 +100,28 @@ const useNotedContext = (initState: StateType) => {
       payload: newBookMark,
     });
   };
-  return { state, handleCreateNoted, renderNotes, removeNote, bookmarkNote };
+  const saveasNote = (title: string, fil: string, id: number): void => {
+    // const newBookMark = state.note.map((obj) => {
+    //   if (obj.id === id) {
+    //     return { ...obj, bookmark: !obj.bookmark };
+    //   } else {
+    //     return obj;
+    //   }
+    // });
+    // console.log("newBookMark", newBookMark);
+    // dispatch({
+    //   type: `${REDUCER_TYPE.BOOKMARK_NOTED}`,
+    //   payload: newBookMark,
+    // });
+  };
+  return {
+    state,
+    handleCreateNoted,
+    renderNotes,
+    removeNote,
+    bookmarkNote,
+    saveasNote,
+  };
 };
 
 type UseNotedContext = ReturnType<typeof useNotedContext>;
@@ -110,6 +132,7 @@ const initContextState: UseNotedContext = {
   renderNotes: () => {},
   removeNote: () => {},
   bookmarkNote: () => {},
+  saveasNote: () => {},
 };
 
 export const NotedContext = createContext<UseNotedContext>(initContextState);

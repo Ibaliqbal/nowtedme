@@ -6,7 +6,7 @@ type ModalNoteProps = {
   handleHideModal: () => void;
 };
 
-const ModalNote = ({ handleHideModal }: ModalNoteProps) => {
+const ModalFolder = ({ handleHideModal }: ModalNoteProps) => {
   const { handleCreateFolder } = useContext(FolderContext);
   const [nameFolder, setNameFolder] = useState<string>("");
   const inputRef = React.useRef<HTMLInputElement | null>(null);
@@ -47,4 +47,4 @@ const ModalNote = ({ handleHideModal }: ModalNoteProps) => {
   );
 };
 
-export default ModalNote;
+export default ModalFolder;
