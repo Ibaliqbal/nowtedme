@@ -10,7 +10,7 @@ type HomeProps = {
 
 const Notes = ({ isOpen, handleHideModalFolder }: HomeProps) => {
   return (
-    <main className="max-w-[90rem] mx-auto relative bg-blue-500 flex flex-row h-screen max-h-[100dvh] flex-wrap">
+    <main className="max-w-[90rem] mx-auto relative flex flex-row h-screen max-h-[100dvh] flex-wrap">
       {isOpen ? <ModalFolder handleHideModal={handleHideModalFolder} /> : null}
 
       <Header handleHideModal={handleHideModalFolder} />

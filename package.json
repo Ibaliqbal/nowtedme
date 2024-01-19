@@ -13,6 +13,7 @@
     "@react-firebase/auth": "^0.2.10",
     "firebase": "^10.7.1",
     "framer-motion": "^10.17.12",
+    "jspdf": "^2.5.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-icons": "^5.0.0",

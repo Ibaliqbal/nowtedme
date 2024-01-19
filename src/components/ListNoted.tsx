@@ -4,6 +4,7 @@ import { NotedContext } from "../context/note.context";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { Note } from "../type/note.type";
 import { AuthContext } from "../context/auth.context";
+import { FaRegFileAlt } from "react-icons/fa";
 
 const ListNoted = () => {
   const { state, renderNotes } = useContext(NotedContext);
@@ -80,37 +81,40 @@ const ListNoted = () => {
               {params.folder?.replace(/-/g, " ")}
             </h1>
             <ul className="grid gap-6 items-center pb-3">
-              {notes.length > 0
-                ? user?.userIqbal
-                  ? notes.map((note) => {
-                      return (
-                        <Link
-                          to={`/${note.folderName}/${note.id}`}
-                          key={note.id}
+              {notes.length > 0 ? (
+                user?.userIqbal ? (
+                  notes.map((note) => {
+                    return (
+                      <Link to={`/${note.folderName}/${note.id}`} key={note.id}>
+                        <motion.li
+                          className="bg-note p-3 rounded-md cursor-pointer"
+                          initial={{ opacity: 0, y: 50 }}
+                          whileInView={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 1, ease: "backInOut" }}
                         >
-                          <motion.li
-                            className="bg-note p-3 rounded-md cursor-pointer"
-                            initial={{ opacity: 0, y: 50 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 1, ease: "backInOut" }}
-                          >
-                            <h2 className="text-xl font-semibold">
-                              {note.title}
-                            </h2>
-                            <p className="mt-3">{`${note.year}/${note.date}/${
-                              note.month + 1
-                            }`}</p>
-                          </motion.li>
-                        </Link>
-                      );
-                    })
-                  : null
-                : null}
+                          <h2 className="text-xl font-semibold">
+                            {note.title}
+                          </h2>
+                          <p className="mt-3">{`${note.year}/${note.date}/${
+                            note.month + 1
+                          }`}</p>
+                        </motion.li>
+                      </Link>
+                    );
+                  })
+                ) : null
+              ) : (
+                <div className="mt-6 flex flex-col items-center justify-center gap-4">
+                  <FaRegFileAlt className="text-4xl md:text-6xl"/>
+                  <h3 className="font-semibold text-xl">Create new note</h3>
+                </div>
+              )}
             </ul>
           </>
         ) : (
           <>
             <h1 className="font-semibold text-2xl">No Folder</h1>
+            <div></div>
             <ul className="grid gap-6 items-center pb-3">
               {notes.length > 0
                 ? user?.userIqbal

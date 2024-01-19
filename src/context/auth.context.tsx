@@ -64,9 +64,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     auth.onAuthStateChanged((userData) => {
-      console.log(userData);
       const user = userData;
-      console.log(user);
       if (user) {
         const userValid = {
           displayName: user.displayName,

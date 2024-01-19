@@ -3,10 +3,11 @@ import {
   TiFolderAdd,
   TiFolder,
   TiFolderOpen,
-  TiStarOutline,
+  TiStar,
   TiTrash,
   TiHome,
 } from "react-icons/ti";
+import { FaRegFileAlt } from "react-icons/fa";
 import { FolderContext } from "../context/folder.context";
 import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -103,7 +104,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
           )}
         </header>
         <div
-          className={`md:static absolute md:opacity-100 md:scale-100 w-[20rem] right-7 top-6 md:bg-secondary bg-note transition-all duration-300 ease-linear origin-top-right ${
+          className={`md:static absolute md:opacity-100 md:scale-100 w-[20rem] right-8 top-6 md:bg-secondary bg-note transition-all duration-300 ease-linear origin-top-right ${
             isOpenHamb ? "opacity-100 scale-100 p-5 z-10" : "scale-0 opacity-0"
           }`}
         >
@@ -115,7 +116,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
           >
             + New Note
           </button>
-          <section className="flex flex-col gap-6 justify-center">
+          <section className="flex flex-col md:gap-6 gap-3 mb-4 justify-center">
             <div className="flex items-center justify-between">
               <h2>Recently</h2>
             </div>
@@ -123,7 +124,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
               <ul className="w-full grid items-center gap-3 max-h-[120px] overflow-auto parent folder-list">
                 {noted.note.length > 0 ? (
                   user?.userIqbal ? (
-                    noted.note.map((note: Note) => {
+                    noted.note.slice(0, 3).map((note: Note) => {
                       return (
                         <motion.li
                           className="group"
@@ -137,12 +138,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
                               to={`/${note.folderName}/${note.id} `}
                               className="flex items-center gap-4"
                             >
-                              {location.pathname ===
-                              `/${note.folderName}/${note.id}` ? (
-                                <TiFolderOpen />
-                              ) : (
-                                <TiFolder />
-                              )}
+                              <FaRegFileAlt />
                               {note.title}
                             </NavLink>
                           </div>
@@ -166,7 +162,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
               </ul>
             </div>
           </section>
-          <section className="flex flex-col gap-6 justify-center">
+          <section className="flex flex-col md:gap-6 gap-3 justify-center">
             <div className="flex items-center justify-between">
               <h2>Folders</h2>
               <button
@@ -246,7 +242,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
                   className="flex items-center gap-4 text-xl cursor-pointer p-2 w-full"
                   onClick={() => navigate("/Favorite")}
                 >
-                  <TiStarOutline className="text-2xl" />
+                  <TiStar className="text-2xl" />
                   Favorite
                 </li>
               </ul>

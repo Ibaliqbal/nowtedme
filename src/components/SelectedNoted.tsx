@@ -7,6 +7,7 @@ import {
   BsStar,
   BsStarFill,
   BsCheckLg,
+  BsFilePdf,
 } from "react-icons/bs";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -14,9 +15,49 @@ import { FolderContext } from "../context/folder.context";
 import { NotedContext } from "../context/note.context";
 import { useLocation, useNavigate } from "react-router-dom";
 import ModalSaveAsNote from "../features/Noted/ModalSaveAsNote";
+import jsPDF from "jspdf";
 
 type SelectedNotedProps = {
   idNoted?: string;
+};
+
+const formats = [
+  "header",
+  "font",
+  "size",
+  "bold",
+  "italic",
+  "underline",
+  "align",
+  "strike",
+  "script",
+  "blockquote",
+  "background",
+  "list",
+  "bullet",
+  "indent",
+  "link",
+  "image",
+  "color",
+  "code-block",
+];
+
+const modules = {
+  toolbar: [
+    ["bold", "italic", "underline", "strike"],
+    ["blockquote", "code-block"],
+    [{ header: 1 }, { header: 2 }],
+    [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }],
+    [{ indent: "-1" }, { indent: "+1" }],
+    [{ direction: "rtl" }],
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+    [{ color: [] }, { background: [] }],
+    [{ font: [] }],
+    [{ align: [] }],
+    ["clean"],
+  ],
 };
 
 const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
@@ -99,7 +140,7 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
     }
   };
 
-  const handleDelete = () => {
+  const handleDelete = (): void => {
     if (idNoted) {
       const idNote = parseInt(idNoted);
       const findNoted = state.note.find((note) => note.id === idNote);
@@ -114,11 +155,21 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
     }
   };
 
-  const hanldeBookMark = () => {
+  const hanldeBookMark = (): void => {
     if (idNoted) {
       const idNote = parseInt(idNoted);
       bookmarkNote(idNote);
     }
+  };
+
+  const handleEksporPdf = (): void => {
+    const doc = new jsPDF();
+    const file = `<div>${value}</div>`;
+    doc.html(file, {
+      callback: function (doc) {
+        doc.save(`${titleNote}.pdf`);
+      },
+    });
   };
 
   return (
@@ -157,7 +208,7 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
               <div
                 className={`absolute p-4 bg-note top-5 right-[70px] ${
                   isOpenMore ? "opcaity-100 scale-100" : "opacity-0 scale-0"
-                } transition-all duration-300 ease-linear origin-top-right flex flex-col justify-between gap-3 rounded-lg`}
+                } transition-all duration-300 ease-linear origin-top-right flex flex-col gap-4 rounded-lg`}
               >
                 <h3
                   className="flex items-center gap-3 cursor-pointer"
@@ -166,25 +217,31 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
                   <BsCheckLg className="text-xl" /> Save
                 </h3>
                 {idNoted ? (
-                  <h3
-                    className="flex items-center gap-3 cursor-pointer"
-                    onClick={hanldeBookMark}
-                  >
-                    {bookmark ? (
-                      <BsStarFill className="text-xl" />
-                    ) : (
-                      <BsStar className="text-xl" />
-                    )}
-                    Favorite
-                  </h3>
-                ) : null}
-                {idNoted ? (
-                  <h3
-                    className="flex items-center gap-3 cursor-pointer"
-                    onClick={handleDelete}
-                  >
-                    <BsTrash className="text-xl" /> Delete
-                  </h3>
+                  <div className="flex flex-col gap-4 w-full">
+                    <h3
+                      className="flex items-center gap-3 cursor-pointer"
+                      onClick={hanldeBookMark}
+                    >
+                      {bookmark ? (
+                        <BsStarFill className="text-xl" />
+                      ) : (
+                        <BsStar className="text-xl" />
+                      )}
+                      Favorite
+                    </h3>
+                    <h3
+                      className="flex items-center gap-3 cursor-pointer"
+                      onClick={handleDelete}
+                    >
+                      <BsTrash className="text-xl" /> Delete
+                    </h3>
+                    <h3
+                      className="flex items-center gap-3 cursor-pointer"
+                      onClick={handleEksporPdf}
+                    >
+                      <BsFilePdf className="text-4xl" /> Ekspor to PDF
+                    </h3>
+                  </div>
                 ) : null}
               </div>
             </div>
@@ -237,6 +294,9 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
             value={value}
             onChange={setValue}
             className="text-white max-h-full desc overflow-auto"
+            placeholder={"Write something..."}
+            modules={modules}
+            formats={formats}
           />
         </div>
       </section>

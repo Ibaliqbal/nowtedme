@@ -45,14 +45,12 @@ const ModalSaveAsNote = ({
         >
           X
         </button>
-        <h3 className="mt-5">Do you want to save or save as on this note?</h3>
-        <p>{title}</p>
-        <p>{fill}</p>
+        <h3 className="mt-5 font-semibold text-xl">Do you want to save or save as on this note?</h3>
         <div className="w-full items-center flex justify-end gap-2">
-          <button className="px-3 py-2 bg-blue-400" onClick={handleSave}>
+          <button className="px-3 py-2" onClick={handleSave}>
             Save
           </button>
-          <button className="px-3 py-2 bg-blue-400" onClick={hanldeSaveAs}>
+          <button className="px-3 py-2" onClick={hanldeSaveAs}>
             Save As
           </button>
         </div>
