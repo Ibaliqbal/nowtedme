@@ -22,7 +22,7 @@ const ModalFolder = ({ handleHideModal }: ModalNoteProps) => {
         >
           X
         </button>
-        <h1 className="text-center text-xl mt-5">Create New Folder</h1>
+        <h1 className="text-center text-xl mt-5 font-bold">Create New Folder</h1>
         <div className="flex items-center gap-6">
           <input
             type="text"

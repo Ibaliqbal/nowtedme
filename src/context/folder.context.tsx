@@ -1,6 +1,7 @@
 import { ReactElement, createContext, useReducer } from "react";
 import { useNavigate } from "react-router-dom";
 import { Folder } from "../type/folder.type";
+import { toast } from "react-toastify";
 
 type StateType = {
   folder: Folder[];
@@ -45,13 +46,14 @@ const useFolderContext = (initState: StateType) => {
 
   const handleCreateFolder = (nameFolder: string) => {
     const id: number = state.folder.length ? state.folder[0].idFolder + 1 : 1;
-    const folderName = nameFolder.replace(/ /g, '-');
+    const folderName = nameFolder.replace(/ /g, "-");
     const folder: Folder[] = [
       {
         idFolder: id,
         nameFolder: folderName,
       },
     ];
+    toast.success("Create new folder successfuly");
     dispatch({
       type: `${REDUCER_TYPE.ADD_NEW_FOLDER}`,
       payload: folder,
@@ -62,6 +64,7 @@ const useFolderContext = (initState: StateType) => {
     const filterFolder = state.folder.filter(
       (folder) => folder.idFolder === idFolder
     );
+    toast.error("Successfuly delete folder");
     dispatch({
       type: `${REDUCER_TYPE.REMOVE_FOLDER}`,
       payload: filterFolder,
