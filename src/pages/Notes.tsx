@@ -1,7 +1,6 @@
 import Noted from "../components/Noted";
 import ListNoted from "../components/ListNoted";
 import Header from "../components/Header";
-import ModalSaveAsNote from "../features/Noted/ModalSaveAsNote";
 import ModalFolder from "../features/Folder/ModalFolder";
 
 type HomeProps = {
