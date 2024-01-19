@@ -132,6 +132,7 @@ const SelectedNoted = ({ idNoted }: SelectedNotedProps) => {
           month={month}
           year={year}
           selectFolder={selectFolder}
+          id={parseInt(idNoted ?? "")}
         />
       ) : null}
       <section className="px-4 py-3 text-white flex flex-col gap-4 h-full parent">

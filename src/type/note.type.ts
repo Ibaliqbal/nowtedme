@@ -1,5 +1,5 @@
 export type Note = {
-  folderName: string | undefined;
+  folderName: string;
   id: number;
   title: string;
   fillNote: string;

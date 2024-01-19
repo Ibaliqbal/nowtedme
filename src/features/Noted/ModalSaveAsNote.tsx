@@ -1,15 +1,17 @@
 import { Dispatch, useContext } from "react";
 import Modal from "../../components/Modal";
 import { NotedContext } from "../../context/note.context";
+import { useNavigate } from "react-router-dom";
 
 type ModalSaveAsNoteProps = {
   setIsOpenModalSaveAs: Dispatch<React.SetStateAction<boolean>>;
   title: string;
   fill: string;
-  date?: number;
-  year?: number;
-  month?: number;
-  selectFolder?: string;
+  date: number;
+  year: number;
+  month: number;
+  id: number;
+  selectFolder: string;
 };
 const ModalSaveAsNote = ({
   setIsOpenModalSaveAs,
@@ -18,12 +20,22 @@ const ModalSaveAsNote = ({
   date,
   month,
   year,
+  id,
   selectFolder,
 }: ModalSaveAsNoteProps) => {
   const { handleCreateNoted, saveasNote } = useContext(NotedContext);
-//   const handleSave = () => {
-//     handleCreateNoted(selectFolder, title, fill, year, month, date);
-//   };
+  const navigate = useNavigate();
+  const handleSave = () => {
+    handleCreateNoted(selectFolder, title, fill, year, month, date);
+    setIsOpenModalSaveAs((prev) => !prev);
+    navigate(`/${selectFolder}`);
+  };
+
+  const hanldeSaveAs = () => {
+    saveasNote(title, fill, id);
+    setIsOpenModalSaveAs((prev) => !prev);
+    navigate(`/${selectFolder}`);
+  };
   return (
     <Modal>
       <div className="p-4 flex flex-col gap-6 relative">

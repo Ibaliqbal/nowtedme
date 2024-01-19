@@ -34,6 +34,8 @@ const reducer = (state: StateType, action: ReducerAction): StateType => {
       return { note: [...action.payload] };
     case `${REDUCER_TYPE.BOOKMARK_NOTED}`:
       return { note: [...action.payload] };
+    case `${REDUCER_TYPE.SAVEAS_NOTED}`:
+      return { note: [...action.payload] };
     default:
       throw new Error();
   }
@@ -89,30 +91,33 @@ const useNotedContext = (initState: StateType) => {
   const bookmarkNote = (id: number): void => {
     const newBookMark = state.note.map((obj) => {
       if (obj.id === id) {
+        !obj.bookmark
+          ? toast.success("Successfully added to favorites")
+          : toast.error("Successfully deleted note from favorites");
         return { ...obj, bookmark: !obj.bookmark };
       } else {
         return obj;
       }
     });
-    console.log("newBookMark", newBookMark);
     dispatch({
       type: `${REDUCER_TYPE.BOOKMARK_NOTED}`,
       payload: newBookMark,
     });
   };
-  const saveasNote = (title: string, fil: string, id: number): void => {
-    // const newBookMark = state.note.map((obj) => {
-    //   if (obj.id === id) {
-    //     return { ...obj, bookmark: !obj.bookmark };
-    //   } else {
-    //     return obj;
-    //   }
-    // });
-    // console.log("newBookMark", newBookMark);
-    // dispatch({
-    //   type: `${REDUCER_TYPE.BOOKMARK_NOTED}`,
-    //   payload: newBookMark,
-    // });
+  const saveasNote = (title: string, fill: string, id: number): void => {
+    console.log(title, fill, id);
+    const newBookMark = state.note.map((obj) => {
+      if (obj.id === id) {
+        return { ...obj, title: title, fillNote: fill };
+      } else {
+        return obj;
+      }
+    });
+    toast.success("Update note successfuiy");
+    dispatch({
+      type: `${REDUCER_TYPE.SAVEAS_NOTED}`,
+      payload: newBookMark,
+    });
   };
   return {
     state,

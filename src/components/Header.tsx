@@ -104,7 +104,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
         </header>
         <div
           className={`md:static absolute md:opacity-100 md:scale-100 w-[20rem] right-7 top-6 md:bg-secondary bg-note transition-all duration-300 ease-linear origin-top-right ${
-            isOpenHamb ? "opacity-100 scale-100 p-5" : "scale-0 opacity-0"
+            isOpenHamb ? "opacity-100 scale-100 p-5 z-10" : "scale-0 opacity-0"
           }`}
         >
           <button

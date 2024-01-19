@@ -84,7 +84,10 @@ const ListNoted = () => {
                 ? user?.userIqbal
                   ? notes.map((note) => {
                       return (
-                        <Link to={`/${params.folder}/${note.id}`} key={note.id}>
+                        <Link
+                          to={`/${note.folderName}/${note.id}`}
+                          key={note.id}
+                        >
                           <motion.li
                             className="bg-note p-3 rounded-md cursor-pointer"
                             initial={{ opacity: 0, y: 50 }}
