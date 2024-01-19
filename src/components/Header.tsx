@@ -57,7 +57,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
                 <TiHome className="text-2xl" />
               </Link>
               <button
-                className="flex flex-col items-center gap-1 lg:hidden"
+                className="flex flex-col items-center gap-1 md:hidden"
                 onClick={() => setIsOpenHamb((prev) => !prev)}
               >
                 <span
@@ -104,7 +104,7 @@ const Header = ({ handleHideModal }: HeaderProps) => {
           )}
         </header>
         <div
-          className={`md:static absolute md:opacity-100 md:scale-100 w-[20rem] right-8 top-6 md:bg-secondary bg-note transition-all duration-300 ease-linear origin-top-right ${
+          className={`md:static absolute md:opacity-100 md:scale-100 w-[20rem] md:w-full right-8 top-6 md:bg-secondary bg-note transition-all duration-300 ease-linear origin-top-right ${
             isOpenHamb ? "opacity-100 scale-100 p-5 z-10" : "scale-0 opacity-0"
           }`}
         >
