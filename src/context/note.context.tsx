@@ -53,12 +53,13 @@ const useNotedContext = (initState: StateType) => {
     date: number
   ): void => {
     const id: number = state.note.length > 0 ? state.note[0].id + 1 : 1;
-    const nameFolder = folderName ? folderName : "No-Folder";
+    const nameFolder: string = folderName ? folderName : "No-Folder";
+    const titleNote: string = !title ? "No Title" : title;
     const newNoted: Note[] = [
       {
         folderName: nameFolder,
         id,
-        title,
+        title: titleNote,
         fillNote,
         year,
         month,
